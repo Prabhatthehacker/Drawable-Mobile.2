@@ -1,0 +1,60 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install Capacitor
+        run: npm install
+
+      - name: Create the Android project from www/
+        run: |
+          npx cap add android
+          npx cap sync android
+
+      - name: Set up Gradle (caches downloads)
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Download Gradle with retries
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          sed -i 's/^networkTimeout=.*/networkTimeout=120000/' gradle/wrapper/gradle-wrapper.properties
+          for i in 1 2 3 4 5; do
+            ./gradlew --version && exit 0
+            echo "Gradle download failed, retrying in 20 seconds..."
+            sleep 20
+          done
+          exit 1
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Drawable-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
