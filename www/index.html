@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Drawable</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>Drawable</h1>
+    <p>Describe a picture or choose one, then watch it get drawn: outlines first, then the colors.</p>
+  </header>
+
+  <section class="stage"><canvas id="view" width="520" height="650" aria-label="Drawing area"></canvas></section>
+  <div class="bar" id="bar" aria-hidden="true"><i id="barfill"></i></div>
+  <p id="status" role="status">Choose a picture or try the demo.</p>
+  <div id="palette" class="palette" aria-label="Colors in this drawing"></div>
+
+  <div class="prompt">
+    <input id="prompt" type="text" placeholder="Describe a picture, e.g. a cat on the moon" maxlength="200" autocomplete="off" enterkeyhint="go" aria-label="Describe a picture">
+    <button id="renew" type="button" disabled title="Make a different picture from the same words">New try</button>
+  </div>
+  <div class="row">
+    <label class="btn" for="file">Choose picture</label>
+    <input id="file" type="file" accept="image/*" hidden>
+    <button id="demo" type="button">Try demo</button>
+  </div>
+
+  <section class="opts" aria-label="Options">
+    <label>Drawing area
+      <select id="shape">
+        <option value="auto">Match the picture</option>
+        <option value="1:1">Square 1:1</option>
+        <option value="4:5">Portrait 4:5</option>
+        <option value="9:16">Phone 9:16</option>
+        <option value="3:2">Landscape 3:2</option>
+        <option value="16:9">Wide 16:9</option>
+      </select>
+    </label>
+    <label>Detail
+      <select id="detail">
+        <option value="360">Low (fast)</option>
+        <option value="520" selected>Medium</option>
+        <option value="720">High</option>
+      </select>
+    </label>
+    <label>Colors <input id="colors" type="range" min="6" max="32" value="16"><b id="colorsOut">16</b></label>
+    <label>Speed
+      <select id="speed">
+        <option value="120">Slow (about 2 min)</option>
+        <option value="45" selected>Normal (about 45 s)</option>
+        <option value="15">Fast (about 15 s)</option>
+        <option value="0">Instant</option>
+      </select>
+    </label>
+    <div class="checks">
+      <label><input id="oOutline" type="checkbox" checked> Outlines first</label>
+      <label><input id="oFill" type="checkbox" checked> Fill colors</label>
+      <label><input id="oBg" type="checkbox" checked> Draw background</label>
+      <label><input id="oRec" type="checkbox"> Record video</label>
+    </div>
+  </section>
+
+  <div class="row">
+    <button id="start" class="primary" type="button" disabled>Start drawing</button>
+    <button id="skip" type="button" disabled>Skip to end</button>
+    <button id="stop" class="danger" type="button" disabled>Stop</button>
+  </div>
+  <div class="row" id="saves" hidden>
+    <button id="saveImg" type="button">Save image</button>
+    <button id="saveVid" type="button" hidden>Save video</button>
+  </div>
+  <p class="hint">Creating a picture from words sends your description to a free online image service and needs internet. Drawing, recording and saving all happen on your phone. Cartoons with clear dark outlines come out best.</p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

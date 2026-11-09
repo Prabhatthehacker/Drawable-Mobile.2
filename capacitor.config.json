@@ -1,0 +1,9 @@
+{
+  "appId": "com.drawable.app",
+  "appName": "Drawable",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "plugins": {
+    "CapacitorHttp": { "enabled": true }
+  }
+}
